@@ -1,0 +1,2 @@
+# ignore compressed versions of data files
+*.7z
