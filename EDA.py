@@ -5,13 +5,12 @@ Created on Sun Jan 20 12:33:53 2019
 
 @author: Joel
 """
-
+# Import needed libraries and packages
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import plotly.graph_objs as go
-import plotly.tools as tls
 
+# Load in data files
 train = pd.read_csv('train.csv')
 test = pd.read_csv('test.csv')
 songs_data = pd.read_csv('songs.csv')
@@ -48,30 +47,10 @@ train['source_system_tab'].nunique()
 train['source_system_tab'].isnull().sum()
 train['source_system_tab'].value_counts().plot(kind = 'bar')
 
-sst_by_target = train.groupby('target')['source_system_tab'].value_counts() # clear differences in target values based on the SST
+train['source_system_tab'] = train['source_system_tab'].fillna('')
 
-ind = np.arange(len(sst_by_target[1].index))
-fig = plt.figure()
-ax = fig.add_subplot(111)
-width = 0.35
+train.loc[train['target'] == 1, train['source_system_tab']
 
-p1 = ax.bar(ind, sst_by_target[0], width, color = 'red')
-p2 = ax.bar(ind, sst_by_target[1], width, color = 'green', bottom = sst_by_target[1])
-
-ax.set_ylabel('Count')
-ax.set_xlabel('SST Groups')
-ax.set_title('Target Classes by SST Groups')
-
-ax.set_xticks(ind + width/2.)
-ax.set_yticks(np.arange(sst_by_target.min(), sst_by_target.max(), 100000))
-ax.set_xticklabels(sst_by_target[0].index.tolist())
-
-plotly_fig = tls.mpl_to_plotly(fig)
-
-plotly_fig['layout']['showlegend'] = True
-plotly_fig['data'][0]['name'] = 'Not Repeated'
-plotly_fig['data'][1]['name'] = 'Repeated'
-plt.plot(plotly_fig, filename = 'stacked-bar-chart')
 
 # Source_screen_name column
 train['source_screen_name'].nunique()
