@@ -43,14 +43,15 @@ test['song_id'].isnull().sum()
 '''
 
 # Source_system_tab column
-train['source_system_tab'].nunique()
+train['source_system_tab'].unique()
 train['source_system_tab'].isnull().sum()
 train['source_system_tab'].value_counts().plot(kind = 'bar')
 
 train['source_system_tab'] = train['source_system_tab'].fillna('')
 
-train.loc[train['target'] == 1, train['source_system_tab']
+sst_by_target = train['source_system_tab'].groupby(train['target']).value_counts()
 
+pivot_df = train.pivot(index = 'source_system_tab', columns = 'target', values = sst_by_target)
 
 # Source_screen_name column
 train['source_screen_name'].nunique()
