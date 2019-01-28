@@ -9,6 +9,7 @@ Created on Sun Jan 20 12:33:53 2019
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objs as go
 
 # Load in data files
 train = pd.read_csv('train.csv')
@@ -47,11 +48,16 @@ train['source_system_tab'].unique()
 train['source_system_tab'].isnull().sum()
 train['source_system_tab'].value_counts().plot(kind = 'bar')
 
+# Fill NaN's with blank string
 train['source_system_tab'] = train['source_system_tab'].fillna('')
 
-sst_by_target = train['source_system_tab'].groupby(train['target']).value_counts()
+vals = train['target'].groupby(by = train['source_system_tab']).value_counts()
 
-pivot_df = train.pivot(index = 'source_system_tab', columns = 'target', values = sst_by_target)
+pd.pivot_table(vals, values = ')
+
+pivot_df = train.pivot(index = 'source_system_tab', 
+                       columns = 'target', 
+                       values = vals)
 
 # Source_screen_name column
 train['source_screen_name'].nunique()
