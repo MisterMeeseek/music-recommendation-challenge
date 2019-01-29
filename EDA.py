@@ -51,23 +51,21 @@ train['source_system_tab'].value_counts().plot(kind = 'bar')
 # Fill NaN's with blank string
 train['source_system_tab'] = train['source_system_tab'].fillna('')
 
-vals = train['target'].groupby(by = train['source_system_tab']).value_counts()
-
-pd.pivot_table(vals, values = ')
-
-pivot_df = train.pivot(index = 'source_system_tab', 
-                       columns = 'target', 
-                       values = vals)
+train.groupby(['source_system_tab', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
 
 # Source_screen_name column
 train['source_screen_name'].nunique()
 train['source_screen_name'].value_counts()
 train['source_screen_name'].isnull().sum()
 
+train.groupby(['source_screen_name', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
+
 # Source_type column
 train['source_type'].nunique()
 train['source_type'].value_counts()
 train['source_type'].isnull().sum()
+
+train.groupby(['source_type', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
 
 ### Songs data
 
@@ -81,6 +79,8 @@ songs = pd.merge(songs_data,
                  sort = False)
 songs.shape
 songs.columns
+
+
 
 # songs_id
 songs['song_id'].nunique()
