@@ -9,7 +9,6 @@ Created on Sun Jan 20 12:33:53 2019
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import plotly.graph_objs as go
 
 # Load in data files
 train = pd.read_csv('train.csv')
@@ -43,7 +42,7 @@ test['song_id'].isnull().sum()
     mislabeling the song_id's. Or, re-publishing the same song under different ID's. 
 '''
 
-# Source_system_tab column
+# Source_system_tab column - name of the system tab (group of system functions) where the replay event was triggered
 train['source_system_tab'].unique()
 train['source_system_tab'].isnull().sum()
 train['source_system_tab'].value_counts().plot(kind = 'bar')
@@ -53,14 +52,14 @@ train['source_system_tab'] = train['source_system_tab'].fillna('')
 
 train.groupby(['source_system_tab', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
 
-# Source_screen_name column
+# Source_screen_name column - name of the layout a user sees
 train['source_screen_name'].nunique()
 train['source_screen_name'].value_counts()
 train['source_screen_name'].isnull().sum()
 
 train.groupby(['source_screen_name', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
 
-# Source_type column
+# Source_type column - entry point a user first plays music on mobile apps
 train['source_type'].nunique()
 train['source_type'].value_counts()
 train['source_type'].isnull().sum()
@@ -80,13 +79,11 @@ songs = pd.merge(songs_data,
 songs.shape
 songs.columns
 
-
-
 # songs_id
-songs['song_id'].nunique()
-songs['song_id'].isnull().sum()
+songs['song_id'].nunique() # 2M+ unique Song ID's
+songs['song_id'].isnull().sum() # 0 nulls
 
-# song_length
+# song_length - in milliseconds
 songs['song_length'].describe()
 (songs['song_length'].min() / 1000) / 60
 (songs['song_length'].mean() / 1000) / 60
@@ -95,8 +92,15 @@ songs['song_length'].describe()
 
 songs[songs['artist_name'] == 'Bill Evans']    # just getting idea of genre id,
                                                # ex. 2122 probably = jazz
-
-# genres
+# genres - songs with more than 1 are separated with '|'
 songs['genre_ids'].nunique()                # 1,045 unique genre ID's
 songs['genre_ids'].isnull().sum()           # % of nulls to total is approx. 4.0%
 songs['genre_ids']
+
+# artist name
+songs['artist_name'].nunique()  # 222,363 unique artist names
+songs['artist_name'].isnull().sum() # 549 null values
+temp_df = songs['artist_name'].drop_duplicates()
+temp_df.size                        # only 1 duplicate
+
+# current question - how many songs does each artist have on the app?
