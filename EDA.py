@@ -9,6 +9,7 @@ Created on Sun Jan 20 12:33:53 2019
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load in data files
 train = pd.read_csv('train.csv')
@@ -78,6 +79,7 @@ songs = pd.merge(songs_data,
                  sort = False)
 songs.shape
 songs.columns
+songs.isnull().sum()
 
 # songs_id
 songs['song_id'].nunique() # 2M+ unique Song ID's
@@ -103,4 +105,6 @@ songs['artist_name'].isnull().sum() # 549 null values
 temp_df = songs['artist_name'].drop_duplicates()
 temp_df.size                        # only 1 duplicate
 
-# current question - how many songs does each artist have on the app?
+# how many songs does each artist have on the app?
+songs[['artist_name', 'song_id']].groupby('artist_name').nunique()
+
