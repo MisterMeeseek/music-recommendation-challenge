@@ -67,7 +67,7 @@ train['source_type'].isnull().sum()
 
 train.groupby(['source_type', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45 )
 
-### Songs data
+### Songs data ###
 
 # Merge the two songs data files
 songs_data.shape
@@ -113,3 +113,29 @@ songs.groupby('artist_name')['song_id'].count().nlargest(10) # Various Artists i
 ## Note: I'm skipping over the other variables for now and focusing on the ISRC feature
 songs['isrc'].isnull().value_counts()       # not as many nulls as expected
 songs['isrc'].nunique()                     # 1.8M unique codes
+
+
+### Members data ###
+members = pd.read_csv('members.csv')
+members.head(10)
+members.shape
+members.size
+members.columns
+members.isnull().sum()
+
+# msno - a subscribers' unique ID
+members['msno'].nunique()                   # no duplicates
+members['msno'].isnull().sum()              # no nulls
+
+# City
+members['city'].nunique()                   # 21 cities, integer based feature
+members['city'].isnull().sum()              # no nulls
+members['city'].value_counts()
+#? What does the grouping on cities look like with respect to repeat plays or
+#? some of the other features
+
+# bd - age, outliers will be present
+members['bd'].describe()
+members['bd'].isnull().sum()
+
+sns.countplot(members['bd'][members['bd'] > 0]) # need to rotate axis and figure out index ordering
