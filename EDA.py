@@ -79,6 +79,7 @@ songs = pd.merge(songs_data,
                  sort = False)
 songs.shape
 songs.columns
+songs.head()
 songs.isnull().sum()
 
 # songs_id
@@ -106,5 +107,9 @@ temp_df = songs['artist_name'].drop_duplicates()
 temp_df.size                        # only 1 duplicate
 
 # how many songs does each artist have on the app?
-songs[['artist_name', 'song_id']].groupby('artist_name').nunique()
+songs.groupby('artist_name')['song_id'].count().nlargest(10) # Various Artists is a very common artist name
+                                                             # Top 10 are almost all jazz and rock musicians
 
+## Note: I'm skipping over the other variables for now and focusing on the ISRC feature
+songs['isrc'].isnull().value_counts()       # not as many nulls as expected
+songs['isrc'].nunique()                     # 1.8M unique codes
