@@ -137,5 +137,38 @@ members['city'].value_counts()
 # bd - age, outliers will be present
 members['bd'].describe()
 members['bd'].isnull().sum()
+members[members['bd'] == 0]['bd'].count()   # lot of 0's so it may be worthwhile to impute this value based on the other features, will have to se if there's any relationships with the other features
 
-sns.countplot(members['bd'][members['bd'] > 0]) # need to rotate axis and figure out index ordering
+members_bd = members[(members['bd'] > 0) & (members['bd'] <= 100)]['bd']
+
+plt.xticks(rotation = 30)
+sns.countplot(members_bd) # need to rotate axis and figure out index ordering
+sns.kdeplot(members_bd)
+
+# gender
+members['gender'].isnull().value_counts()
+members['gender'].fillna('unknown')
+members['gender'].value_counts()        # another potential candidate for imputation
+sns.countplot(members['gender'])
+
+# registered_via
+members['registered_via'].head()
+members['registered_via'].isnull().sum()                            # no nulls
+members[members['registered_via'] == 0]['registered_via'].count()   # no zeroes
+members['registered_via'].nunique()                                 # 6 unique registration points
+members['registered_via'].value_counts()                            
+sns.countplot(members['registered_via'])         # 4, 7, and 9 are by far the top registration points
+
+# registration_init_time - format is %Y%m%d
+members['registration_init_time']
+year_registered = members['registration_init_time'].astype(str).str[:4]
+year_registered.nunique()
+year_registered.value_counts()                  # 2016 saw biggest increase in registrations
+sns.countplot(year_registered)
+
+month_registered = members['registration_init_time'].astype(str).str[4:6]
+month_registered.nunique()
+month_registered.value_counts()
+sns.countplot(month_registered)
+
+day_registered = 
