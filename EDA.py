@@ -171,4 +171,39 @@ month_registered.nunique()
 month_registered.value_counts()
 sns.countplot(month_registered)
 
-day_registered = 
+day_registered = members['registration_init_time'].astype(str).str[6:8]
+day_registered.nunique()
+day_registered.value_counts()
+sns.countplot(day_registered)
+
+# expiration_date
+members['expiration_date']
+year_expired = members['expiration_date'].astype(str).str[:4]
+year_expired.nunique()
+year_expired.value_counts()
+sns.countplot(year_expired)
+
+
+### EDA on merged datasets to evaluate relationships between features and target ###
+
+# merging the datasets into one
+total_data = pd.merge(train,
+                      members,
+                      how = 'inner',
+                      on = 'msno',
+                      sort = False)
+total_data.shape
+
+total_data = pd.merge(train,
+                      songs,
+                      how = 'inner',
+                      on = 'song_id',
+                      sort = False)
+
+total_data.groupby(['city', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45) # almost 50/50 split across all cities
+
+
+# Cross joint distributions/groupings of features vs. "target"
+''' Questions about user behavior & user cross-section that I want to explore
+1.) Ages of users grouped across cities
+2.) 
