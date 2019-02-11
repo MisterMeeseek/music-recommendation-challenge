@@ -192,18 +192,50 @@ total_data = pd.merge(train,
                       how = 'inner',
                       on = 'msno',
                       sort = False)
-total_data.shape
 
-total_data = pd.merge(train,
+total_data = pd.merge(total_data,
                       songs,
                       how = 'inner',
                       on = 'song_id',
                       sort = False)
 
-total_data.groupby(['city', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45) # almost 50/50 split across all cities
-
-
 # Cross joint distributions/groupings of features vs. "target"
-''' Questions about user behavior & user cross-section that I want to explore
-1.) Ages of users grouped across cities
-2.) 
+
+# column check
+total_data.columns
+
+# Examining differences in behavior and by regional (city) feature
+total_data.groupby(['city', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45) # almost 50/50 split across all cities
+total_data.groupby(['city', 'source_system_tab']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45)
+total_data.groupby(['city', 'source_screen_name']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45)
+total_data.groupby(['city', 'gender']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45)
+
+# Examining differences in gender wrt target
+total_data.groupby(['gender', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 45)
+total_data['target'].groupby(total_data['gender']).value_counts() / total_data['target'].groupby(total_data['gender']).value_counts().sum()
+
+# Source screen name wrt target
+total_data.groupby(['source_screen_name', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 30)
+
+# Source system tab wrt target
+total_data.groupby(['source_system_tab', 'target']).size().unstack().plot(kind = 'bar', stacked = True, rot = 30)
+total_data.groupby(['source_screen_name', 'source_system_tab']).size().unstack().plot(kind = 'bar', stacked = True, rot = 30)
+
+# Song lengths and target
+# first, I'll transform song_length to minutes
+total_data['song_length_minutes'] = (total_data['song_length'] / 1000) / 60
+print(total_data['song_length_minutes'])
+
+sns.stripplot(x = 'target',
+            y = 'song_length_minutes',
+            jitter = True,
+            data = total_data)
+
+''' There a couple differences in the distribution of target variables across song length:
+    1.) Clear break at 125 minutes above which repeat plays are consistent
+    2.) Interesting concentration in both classes at around 60 minutes. I wonder
+        if these are specific content formats like a podcast?
+    3.) Most songs are at length 30 minutes or less '''
+    
+''' Let's try the above data again with a swarmplot instead, see if we can get
+more insight to the distribution '''    

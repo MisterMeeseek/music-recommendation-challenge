@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Feb 10 11:56:42 2019
+
+@author: Joel
+"""
+
+### Using this as a note taking pad ###
+
+Men seem to be slightly more likely to repeat plays, but the numbers don't support
+a significant difference between genders.
+
+My library is definitely the preferred area for users to access their music followed 
+by Discover. 
+
+There is definitely some strong preferences among users for their entry points
+with music on the streaming service. Look at the Source Screen Name feature.
+Local playlist more, Online playlist more, Radio, and Album more make up the
+majority of entry points. Somewhat surprisingly My Library is not.
+
+Hmmm, strong relationship found between target and the Source Screen Name.
+Most of the SSN categories show a bias towards non-repeated plays. However,
+Local playlist more shows a notable bias towards repeated plays. This would
+make sense I think, a local playlist could be assumed to contain music the user
+likes and would listen to again. There's also purposed playlists like 
+"workout" and "motivation" playlists that a user may use frequently and would
+thus lead to more repeated plays. 
+
+^ a look at similarities in the genres and source screen name/tab features may
+  help dimensionalize this better
+  
+Similar relationship is seen wrt to joint distribution of target values among 
+source screen name categories. Biased towards non-repeats with all classes 
+except "My Library" where there's a bias towards repeat plays. Also makes sense
+as a user would be more likely to listen to songs they've added to their personal
+library more than once.
+
