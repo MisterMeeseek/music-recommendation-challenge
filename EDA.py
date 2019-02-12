@@ -231,6 +231,10 @@ sns.stripplot(x = 'target',
             jitter = True,
             data = total_data)
 
+sns.swarmplot(x = 'target',
+              y = 'song_length_minutes',
+              data = total_data)
+
 ''' There a couple differences in the distribution of target variables across song length:
     1.) Clear break at 125 minutes above which repeat plays are consistent
     2.) Interesting concentration in both classes at around 60 minutes. I wonder
