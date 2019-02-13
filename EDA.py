@@ -231,11 +231,13 @@ sns.stripplot(x = 'target',
             jitter = True,
             data = total_data)
 
-sns.swarmplot(x = 'target',
-              y = 'song_length_minutes',
+sns.jointplot(x = 'song_length_minutes',
+              y = 'target',
               data = total_data)
+total_data[total_data['target'] == 1]['song_length_minutes'].value_counts()
+# to get the jointplot to work, I need the number of each target class for every song length
 
-''' There a couple differences in the distribution of target variables across song length:
+''' There's a couple differences in the distribution of target variables across song length:
     1.) Clear break at 125 minutes above which repeat plays are consistent
     2.) Interesting concentration in both classes at around 60 minutes. I wonder
         if these are specific content formats like a podcast?
