@@ -224,18 +224,17 @@ total_data.groupby(['source_screen_name', 'source_system_tab']).size().unstack()
 # Song lengths and target
 # first, I'll transform song_length to minutes
 total_data['song_length_minutes'] = (total_data['song_length'] / 1000) / 60
-print(total_data['song_length_minutes'])
 
 sns.stripplot(x = 'target',
             y = 'song_length_minutes',
             jitter = True,
             data = total_data)
 
-sns.jointplot(x = 'song_length_minutes',
-              y = 'target',
-              data = total_data)
-total_data[total_data['target'] == 1]['song_length_minutes'].value_counts()
-# to get the jointplot to work, I need the number of each target class for every song length
+repeats = total_data[total_data['target'] == 1]['song_length_minutes'].value_counts()
+non_repeats = total_data[total_data['target'] == 0]['song_length_minutes'].value_counts()
+index = total_data['song_length_minutes']
+plt.plot(repeats, 'g--')
+plt.plot(non_repeats, 'r--')
 
 ''' There's a couple differences in the distribution of target variables across song length:
     1.) Clear break at 125 minutes above which repeat plays are consistent
@@ -243,5 +242,21 @@ total_data[total_data['target'] == 1]['song_length_minutes'].value_counts()
         if these are specific content formats like a podcast?
     3.) Most songs are at length 30 minutes or less '''
     
-''' Let's try the above data again with a swarmplot instead, see if we can get
-more insight to the distribution '''    
+# Genres and Target
+''' first, I may need to parse out all the genre_ids for each record. Many of these
+contain more than 1 genre, separated by a '|'. I'll need the record with the most 
+genre_ids in it so that I can set the number of columns that I need'''
+total_data['target'].groupby(total_data['genre_ids']).value_counts()
+total_data['genre_ids'].str.len().max() # longest genre ID field is 33 characters long
+total_data['genre_ids'][total_data['genre_ids'].str.len() == 33]    # Interestingly, the records with 33 char. long genre_id field have the same  8 genre ids
+total_data['genre_ids'].isnull().value_counts() # 118k NaN records
+
+total_data['genre_ids'] = total_data['genre_ids'].fillna('')
+genre_ids = total_data['genre_ids'].str.split('|', expand = True)
+print(genre_ids)
+
+for i in genre_ids:
+    if i != None:
+        print(i)
+    else:
+        continue
